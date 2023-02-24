@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util https://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+        <bean id="HelloSpring" class="com.canyan7n.spring.HelloSpring">
+            <property name="userName" value="张三"></property>
+        </bean>
+<!--setter注入-->
+        <bean id="studentone" class="com.canyan7n.spring.Student">
+            <property name="sid" value="2001"></property>
+            <property name="sname" value="张三"></property>
+            <property name="sage" value="20"></property>
+            <property name="sgender" value="男"></property>
+<!--            <property name="clazz" ref="clazzone"></property>-->
+        </bean>
+<!--构造器注入-->
+<!--        <bean id="studenttwo" class="com.canyan7n.spring.Student">-->
+<!--            <constructor-arg name="sid" value="2002"></constructor-arg>-->
+<!--            <constructor-arg name="sname" value="李四"></constructor-arg>-->
+<!--            <constructor-arg name="sage" value="30"></constructor-arg>-->
+<!--            <constructor-arg name="sgender" value="女"></constructor-arg>-->
+<!--        </bean>-->
+
+<!--    同一bean创建的是同一个对象，默认是单例模式singleton 多例模式prototype-->
+        <bean id="studentfive" class="com.canyan7n.spring.Student" scope="prototype">
+            <property name="sid" value="2005"></property>
+            <property name="sname" value="王五"></property>
+            <property name="sage" value="25"></property>
+            <property name="sgender" value="男"></property>
+
+<!--类类型赋值之依赖注入-->
+            <property name="clazz" ref="clazzone"></property>
+<!--            <property name="clazz.cid" value="3002"></property>-->
+<!--            <property name="clazz.cname" value="远大前程班"></property>-->
+
+<!--数组赋值之依赖注入注入-->
+            <property name="hobby">
+                <array>
+                    <value>抽烟</value>
+                    <value>喝酒</value>
+                    <value>烫头</value>
+                </array>
+            </property>
+<!--            <property name="teacherMap" ref="teachermap"></property>-->
+            <property name="teacherMap">
+                <map>
+                    <entry key="10086" value-ref="teacherOne"></entry>
+                    <entry key="10010" value-ref="teacherTwo"></entry>
+                </map>
+            </property>
+        </bean>
+        <bean id="studentsix" class="com.canyan7n.spring.Student" p:sid="1006" p:sname="赵六" p:teacherMap-ref="teachermap">
+        </bean>
+
+        <bean id="clazzone" class="com.canyan7n.spring.Clazz">
+            <property name="cid" value="3001"></property>
+            <property name="cname" value="最强王者班"></property>
+
+<!--list赋值之依赖注入-->
+            <property name="students">
+                <list>
+                    <ref bean="studentone"></ref>
+<!--                    <ref bean="studentfive"></ref>-->
+                </list>
+            </property>
+        </bean>
+
+        <bean id="clazztwo" class="com.canyan7n.spring.Clazz">
+            <property name="cid" value="3002"></property>
+            <property name="cname" value="远大前程班"></property>
+<!--            <property name="students">-->
+<!--                <list>-->
+<!--                    <ref bean="studentone"></ref>-->
+<!--                    <ref bean="studentfive"></ref>-->
+<!--                </list>-->
+<!--            </property>-->
+            <property name="students" ref="studentList"></property>
+        </bean>
+
+        <bean id="teacherOne" class="com.canyan7n.spring.Teacher">
+            <property name="tid" value="10086"></property>
+            <property name="tname" value="大宝"></property>
+        </bean>
+        <bean id="teacherTwo" class="com.canyan7n.spring.Teacher">
+            <property name="tid" value="10010"></property>
+            <property name="tname" value="小宝"></property>
+        </bean>
+
+        <util:list id="studentList" >
+            <ref bean="studentone"></ref>
+<!--            <ref bean="studentfive"></ref>-->
+        </util:list>
+
+        <util:map id="teachermap">
+            <entry key="10086" value-ref="teacherOne"></entry>
+            <entry key="10010" value-ref="teacherTwo"></entry>
+        </util:map>
+
+        <bean id="userOne" class="com.canyan7n.spring.User" init-method="initMethod" destroy-method="destroyMethod">
+            <property name="uId" value="4001"></property>
+            <property name="uName" value="张三"></property>
+        </bean>
+</beans>
